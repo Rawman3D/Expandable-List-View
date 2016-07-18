@@ -2,7 +2,9 @@ package com.example.leapfrog.expandablelistview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +32,36 @@ public class MainActivity extends AppCompatActivity {
 
         // setting list Adapter
         expListView.setAdapter(listAdapter);
+
+        //when child is clicked, Listener
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + " : " + listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + " Expanded", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(), listDataHeader.get(groupPosition) + " Collapsed",Toast.LENGTH_SHORT);
+            }
+        });
+
+
+
     }
 
     //prepare the list data
-    private void prepareListData(){
+    private void prepareListData() {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
@@ -44,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         listDataHeader.add("Desert");
 
         //adding child data
-        List<String> drinks= new ArrayList<String>();
+        List<String> drinks = new ArrayList<String>();
         drinks.add("Coca Cola");
         drinks.add("Pepsi");
         drinks.add("Dew");
@@ -77,17 +105,13 @@ public class MainActivity extends AppCompatActivity {
         dessert.add("Chocolate fudge");
         dessert.add("Chocolate thaadai");
 
-        listDataChild.put(listDataHeader.get(0),drinks);
-        listDataChild.put(listDataHeader.get(1),apetizer);
-        listDataChild.put(listDataHeader.get(2),maincourse);
-        listDataChild.put(listDataHeader.get(3),dessert);
-
-
-
+        listDataChild.put(listDataHeader.get(0), drinks);
+        listDataChild.put(listDataHeader.get(1), apetizer);
+        listDataChild.put(listDataHeader.get(2), maincourse);
+        listDataChild.put(listDataHeader.get(3), dessert);
 
 
     }
-
 
 
 }
